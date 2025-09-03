@@ -33,6 +33,10 @@ current_update = 0
 vowellist = (65, 69, 73, 85, 79)
 # delcares list to hold the ASCII numbers for vowels
 
+#Creates the Scrabble word list 
+with open("Collins Scrabble Words (2019).txt", "r") as file:
+    word_list = set(line.strip().lower() for line in file) 
+
 scrabble_points = {
     'a': 1,
     'b': 3,
@@ -62,9 +66,6 @@ scrabble_points = {
     'z': 10
 }
 
-
-#
-
 def scoring(arr):
     score = 0
     for i in range(len(arr)):
@@ -73,20 +74,6 @@ def scoring(arr):
                 score += value
     return score
 
-
-def bubblesort(arr):
-    n = len(arr)
-    swapped = False
-    for i in range(n - 1):
-        for j in range(n - i - 1):
-            if arr[j] > arr[j + 1]:
-                swapped = True
-                arr[j], arr[j + i] = arr[j + i], arr[j]
-        if not swapped:
-            return arr
-
-
-# bubble sort check the last returning arr if doesnt work:
 
 def splitword(word):
     List = []
@@ -137,20 +124,17 @@ def realword(word, letterlist):
     global roundnumber
     global mp
     global ticked
+    global word_list
     if roundnumber >= 6:
         finish = True
-    api_url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word
-    # creates link to api based on the user input
-    response = requests.request("GET", api_url)
 
-    if str(response) == "<Response [200]>":
-        # response 200 is good and response 404 is bad:
+    if word in word_list:
         intscore = intscore + (scoring(splitword(word)) * mp)
         playerscore.set(intscore)
         prompt.set("The word '" + word + "' is correct\n" + str(scoring(splitword(word)) * mp) + " points are awarded!")
         roundnumber += 1
         mp = 1
-        if roundnumber >= 6:  # new
+        if roundnumber >= 6: 
             # timeron = False
             endgame(intscore, db(score=intscore))
             return
@@ -323,71 +307,46 @@ def endgame(score=0, scoredict={}):
                           width=20)
     UsernameEntry.pack(padx=50, pady=10, side="bottom")  # 40
 
-
-def db(name="Placeholder", score=0):
+def db(name=None, score=None, db_path="Highscore.db"):
+    """
+    Adds a user and score to the database (if valid) and returns a dict of all user scores.
+    
+    Parameters:
+        name (str): The player's name (alphanumeric). Ignored if None or invalid.
+        score (int): The player's score. Ignored if None or 0.
+        db_path (str): Path to SQLite database file.
+        
+    Returns:
+        dict: {name: score} for all entries in the database.
+    """
     import sqlite3
-    connection = sqlite3.connect("Highscore.db")
-    # creates database#
-
-    # Create a cursor object
-    cursor = connection.cursor()
-
-    # Execute a SQL query to create a table
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users
-                      (id INTEGER PRIMARY KEY, name TEXT, score INTEGER)''')
-
-    # Execute a DELETE statement to clear the table
-    # cursor.execute("DELETE FROM users")
-
-    if name == "Placeholder" or score == 0:
-        print()
-        # print("Failed to add because name is placeholder")
-    elif name.isalnum():
-        # print("added", name)
-        # Insert some data into the table
-        cursor.execute("INSERT INTO users (name, score) VALUES (?, ?)", (str(name), int(score)))
-    else:
-        print()
-        # print("Failed to add because not alphanum")
-
-    scorelist = []
+    # Connect to database and create table if it doesn't exist
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL,
+                score INTEGER NOT NULL
+            )
+        """)
+        
+        # Insert valid user
+        if name and score:
+            if isinstance(name, str) and name.isalnum() and isinstance(score, int) and score > 0:
+                cursor.execute("INSERT INTO users (name, score) VALUES (?, ?)", (name, score))
+        
+        # Fetch all users
+        cursor.execute("SELECT name, score FROM users")
+        rows = cursor.fetchall()
+        
+    # Build the dictionary, using alphanumeric prefix of names
     scoredict = {}
-    # Query the database
-    cursor.execute("SELECT score FROM users")
-    for row in cursor.fetchall():
-        string = str(str(row)[1:2])
-        strring = str(str(row)[1:3])
-        strrring = str(str(row)[1:4])
-        if strrring.isnumeric():
-            scorelist.append(int(strrring))
-        elif strring.isnumeric():
-            scorelist.append(int(strring))
-        elif string.isnumeric():
-            scorelist.append(int(string))
-    #######scorelist.sort(reverse=True)
-    #print(scorelist)
-    # validated the scores and the integers are put into a list
-
-    cursor.execute("SELECT * FROM users")
-    #
-    name = ""
-    for all in cursor.fetchall():
-        name = ""
-        for letter in all[1]:  # assumes the first column of the row contains the string
-            if letter.isalnum():  # check alphanumeric
-                name += letter  # Add the alphamueric letter to the name string
-            else:
-                break  # exit loop if the letter is not alnum
-        if name:  # Check if name is not empty
-            scoredict[name] = all[2]  # Assuming the score is in the third column
-            #print("Name:", name, "Score:", all[2])
-
-    # Commit changes to the database
-    connection.commit()
-
-    #print(scoredict)
-    # Close the connection
-    connection.close()
+    for user_name, user_score in rows:
+        clean_name = "".join([c for c in user_name if c.isalnum()])
+        if clean_name:
+            scoredict[clean_name] = user_score
+            
     return scoredict
 
 
@@ -417,6 +376,8 @@ def shufflerack():
         rack.set(rack_opto((createalphalist())))
         prompt.set("SHUFFLE RACK ENABLED")
         usedsr = True
+        global timer
+        timer = 30
     else:
         prompt.set("Already used this ability")
 
