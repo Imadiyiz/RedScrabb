@@ -401,8 +401,13 @@ root.title("Scrabble")
 # configure the window attributes to make it fullscreen
 root.attributes("-fullscreen", True)
 
+
+root_width = root.winfo_screenwidth()
+root_height = root.winfo_screenheight()
 # set the window geometry to match the screen resolution
-root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
+root.geometry("{0}x{1}+0+0".format(root_width, root_height))
+print(root_width, root_height)
+
 
 root.config(bg=hex_background)
 
@@ -453,6 +458,13 @@ def MM():
     global roundnumber
     global ticked
     global ticked_no
+    global usedsr
+    global prompt
+
+
+    #reset prompt    
+    prompt.set("Type a word using as many letters as possible")
+    usedsr = False
 
     if ticked_no == 1:# determines whether timer should play
         ticked = False
@@ -478,57 +490,18 @@ def MM():
     frame1.pack(expand=True, fill=BOTH)
     # Creating the first frame
 
-    TopHeading = Label(frame1, width="300", height="2", text="Red Scrabble", bg=hex_buttons, fg="ghostwhite",
+    TopHeading = Label(frame1, width=300, height=2, text="Red Scrabble", bg=hex_buttons, fg="ghostwhite",
                        font=("Impact", 32)).pack()
     # Creates the main heading for the Main menu page
 
-    btn_play = Button(frame1, text="Play", font='Impact 60', bg=hex_buttons, fg='ghostwhite', command=choice,
-                      width="15")
-    btn_play.pack(padx=500, pady=80)
+    btn_play = Button(frame1, text="Play", font='Impact 60', bg=hex_buttons, fg='ghostwhite', command=player1,
+                      width=15)
+    btn_play.pack(padx=.032552*root_width, pady=0.0925925*root_height)
     # Creates the play button
 
-    btn_exit = Button(frame1, text="Exit", font='Impact 60', bg=hex_buttons, fg='ghostwhite', command=close, width="15")
-    btn_exit.pack(padx=500, pady=80)
+    btn_exit = Button(frame1, text="Exit", font='Impact 60', bg=hex_buttons, fg='ghostwhite', command=close, width=15)
+    btn_exit.pack(padx=.032552*root_width, pady=0.0925925*root_height)
     # Creates the exit button
-
-
-def choice():
-    global frame1
-    global frame2
-    global frame3
-    # Declaring all the frame variables
-
-    if frame1 != None:
-        frame1.destroy()
-        frame1 = None
-    if frame3 != None:
-        frame3.destroy()
-        frame3 = None
-
-    global ticked
-    #ticked = True
-    prompt.set("Type a word using as many letters as possible")
-
-    frame2 = Frame(root, bg=hex_background, width=1750,
-                   height=1700)
-    frame2.pack(expand=True, fill=BOTH)
-    # Creating the first frame
-
-    Label(frame2, width="300", height="2", text="Choose how many players", bg=hex_buttons, fg="ghostwhite",
-          font=("impact", 32)).pack()
-    # Creates the main heading for the x page
-
-    btn_1 = Button(frame2, text="1 Player", font='Impact 60', bg=hex_buttons, fg='ghostwhite', width="15",
-                   command=player1)
-    btn_1.pack(padx=500, pady=80)
-    # Creates the x button
-
-    btn_2 = Button(frame2, text="Good Luck", font='Impact 60', bg=hex_buttons, fg='ghostwhite', width="15")  # command=)
-    btn_2.pack(padx=500, pady=80)
-    # Creates the x button
-
-    btn_back = Button(frame2, text="Back", font='Impact 60', bg=hex_buttons, fg='ghostwhite', command=MM)
-    btn_back.place(x=1100, y=520)
 
 
 # addition#####
