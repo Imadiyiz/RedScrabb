@@ -361,29 +361,41 @@ def j():
 def x2():
     global usedx
     global mp
+    global btn_x2_colour
+    global used_button_colour
+
     if usedx is False:
         mp = 2
         prompt.set("X2 SCORE ENABLED")
         usedx = True
+        btn_x2_colour = used_button_colour
+
     else:
         mp = 1
         prompt.set("Already used this ability")
 
 
+
 def shufflerack():
     global usedsr
+    global btn_shuffle_colour
+    global used_button_colour
+
     if usedsr is False:
         rack.set(rack_opto((createalphalist())))
         prompt.set("SHUFFLE RACK ENABLED")
         usedsr = True
         global timer
         timer = 30
+        btn_shuffle_colour = used_button_colour
+
     else:
         prompt.set("Already used this ability")
 
 
 hex_background = "#F3EFE0"
 hex_buttons = "#BD2626"
+used_button_colour = "#7F1919"
 frame1 = None
 frame2 = None
 frame3 = None
@@ -406,7 +418,6 @@ root_width = root.winfo_screenwidth()
 root_height = root.winfo_screenheight()
 # set the window geometry to match the screen resolution
 root.geometry("{0}x{1}+0+0".format(root_width, root_height))
-print(root_width, root_height)
 
 
 root.config(bg=hex_background)
@@ -527,6 +538,27 @@ playerscore.set("0")
 timerno = StringVar()
 roundnumber = 1
 
+def use_shufflerack():
+    shufflerack()
+
+    # darken the button after use
+    global btn_shuffle_colour
+    global btn_font_shuffle_colour
+    btn_shuffle_colour = used_button_colour  # darker red
+    btn_font_shuffle_colour = '#A9A9A9' 
+    btn_shuffle.configure(bg=btn_shuffle_colour, fg = btn_font_shuffle_colour)
+
+def use_x2():
+    x2()
+
+    # darken the button after use
+    global btn_x2_colour
+    global btn_font_x2_colour
+    btn_x2_colour = used_button_colour  # darker red
+    btn_font_x2_colour = '#A9A9A9'  
+    btn_x2.configure(bg=btn_x2_colour, fg = btn_font_x2_colour)
+
+
 
 def player1():
     global roundnumber
@@ -552,12 +584,25 @@ def player1():
     global ticked  # only need to call once for the timer
     global ticked_no
     ticked_no = 1
+    global btn_shuffle_colour
+    global btn_x2_colour
+    global hex_buttons
+    global btn_x2
+    global btn_shuffle
+    global btn_font_shuffle_colour
+    global btn_font_x2_colour
+
+    btn_shuffle_colour = hex_buttons
+    btn_x2_colour = hex_buttons
+    btn_font_shuffle_colour = '#F8F8FF'
+    btn_font_x2_colour ='#F8F8FF'
 
     timer = 30
     timerno.set("30")
     entryword.set("")
     twoplayer = False
     ticker = 1
+
 
     # Declaring all the frame variables
 
@@ -616,12 +661,12 @@ def player1():
     btn_back = Button(frame3, text="Main Menu", font='impact 30', bg=hex_buttons, fg='ghostwhite', command=MM)
     btn_back.grid(row=2, column=1, padx=10, pady=0)
     # back
-    btn_x2 = Button(f1, width="12", text="x2 round\nscore", font='Impact 27', bg=hex_buttons, fg='ghostwhite',
-                    command=x2)
+    btn_x2 = Button(f1, width="12", text="x2 round\nscore", font='Impact 27', bg=btn_x2_colour, fg=btn_font_x2_colour,
+                    command=use_x2)
     btn_x2.grid(row=4, column=0, padx=20, pady=20)
     # x2 points power up
-    btn_shuffle = Button(f1, width="12", text="Shuffle rack", font='Impact 27', bg=hex_buttons, fg='ghostwhite',
-                         command=shufflerack)
+    btn_shuffle = Button(f1, width="12", text="Shuffle rack", font='Impact 27', bg=btn_shuffle_colour, fg=btn_font_shuffle_colour,
+                         command=use_shufflerack)
     btn_shuffle.grid(row=5, column=0, padx=20, pady=20)
     # shuffle rack again
 
