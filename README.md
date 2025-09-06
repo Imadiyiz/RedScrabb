@@ -18,7 +18,7 @@ Start the game Run the main script to launch the game in your terminal.
 
 Place words This is a single player game. Each round you form valid words from your given letters, pressing enter to submit your word. You may use the same letter multiple times.
 
-Scoring Each word is checked for validity. Scores are assigned based on letter values (as in Scrabble). Scores are saved to a local SQLite database (Highscore.db).
+Scoring each word is checked for validity. Scores are assigned based on letter values (as in Scrabble). Scores are saved to a local SQLite database (Highscore.db).
 
 Power-ups There are two power-ups in this game
 
