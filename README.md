@@ -46,6 +46,8 @@ Python 3.7+
 
 Clone the repository and run:
 
-> python RedScrabble.py
+```bash
+python RedScrabble.py
+```
 
 A Highscore.db database will be created automatically if it doesn’t exist.
