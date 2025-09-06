@@ -1,6 +1,6 @@
 # RedScrabble Project Overview
 
-This is a word game built in Python, which is a crossover between the infamous gameshow countdown and Scrabble the household board game. The project was originally completed during Summer 2023 as an extension of a college project.
+This is a word game built in Python, which is a crossover between the infamous Gameshow countdown and the Scrabble board game. The project was originally completed during Summer 2023 as an extension of a college project.
 
 ### The game includes:
 
