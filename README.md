@@ -32,7 +32,7 @@ The first being the 'shuffle rack' option. This enables you to replay a round wi
 
 The second being the 'X2 score' option. If you believe you have a high scoring word, you can use the X2 score power-up before submitting the word to double the value of the letters.
 
-*REMINDER:* These power-ups can be used in the same round and can only be used once in total.
+**REMINDER:** These power-ups can be used in the same round and can only be used once in total.
 
 ### Winning
 
