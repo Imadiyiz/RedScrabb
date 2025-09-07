@@ -472,12 +472,23 @@ def MM():
     global usedsr
     global prompt
 
+    global btn_font_shuffle_colour
+    global btn_font_x2_colour
+    global btn_x2_colour
+    global btn_shuffle_colour
+
+    btn_shuffle_colour = hex_buttons
+    btn_x2_colour = hex_buttons
+    btn_font_shuffle_colour = '#F8F8FF'
+    btn_font_x2_colour ='#F8F8FF'
+
+
 
     #reset prompt    
     prompt.set("Type a word using as many letters as possible")
     usedsr = False
 
-    if ticked_no == 1:# determines whether timer should play
+    if ticked_no == 1: # determines whether timer should play
         ticked = False
     else:
         ticked = True
@@ -591,11 +602,6 @@ def player1():
     global btn_shuffle
     global btn_font_shuffle_colour
     global btn_font_x2_colour
-
-    btn_shuffle_colour = hex_buttons
-    btn_x2_colour = hex_buttons
-    btn_font_shuffle_colour = '#F8F8FF'
-    btn_font_x2_colour ='#F8F8FF'
 
     timer = 30
     timerno.set("30")
