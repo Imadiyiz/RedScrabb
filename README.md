@@ -48,6 +48,7 @@ Clone the repository and run:
 
 ```bash
 pip install pygame
+pip install keyboard
 python main.py
 ```
 
