@@ -47,6 +47,7 @@ Python 3.7+
 Clone the repository and run:
 
 ```bash
+pip install pygame
 python main.py
 ```
 
