@@ -1,4 +1,3 @@
-import requests
 import random
 from collections import Counter
 from tkinter import *
