@@ -1,13 +1,9 @@
-import requests
 import random
 from collections import Counter
 from tkinter import *
-import tkinter as tk
-from tkinter import ttk, messagebox
 import keyboard
 import threading
 import random
-import time
 import pygame
 
 # Import libaries
